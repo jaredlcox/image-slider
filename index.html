@@ -3,23 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Image Slider</title>
     <link rel="stylesheet" type="text/css" href="index.css" />
   </head>
   <body>
-    <div class="comparison-slider">
-      <div class="color-div before"></div>
-      <div class="color-div after"></div>
-      <div class="click-blocker"></div>
-      <div class="slider"></div>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value="50"
-        oninput="updateSlider(this.value)"
-      />
-    </div>
+    <div class="image-comparison-slider">
+        <img src="./images/before-redesign.jpeg" alt="before">
+        <div class="img-wrapper">
+          <img src="./images/after-redesign.png" alt="after">
+        </div>
+        <span class="label label-before">Before</span> 
+        <span class="label label-after">After</span>
+        <div class="handle">
+          <div class="handle-line"></div>
+          <div class="handle-circle">
+            <p><</p>
+            <p>></p>
+          </div>
+          <div class="handle-line"></div>
+        </div>
+      </div>
+
     <script src="slider.js"></script>
   </body>
 </html>
