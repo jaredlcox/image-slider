@@ -1,44 +1,37 @@
-function updateSlider(value) {
-  const afterDiv = document.querySelector(".comparison-slider .after");
-  const slider = document.querySelector(".comparison-slider .slider");
-  afterDiv.style.width = `${100 - value}%`;
-  slider.style.left = `${value}%`;
+const slider = document.querySelector("#image-comparison-slider");
+const sliderImgWrapper = document.querySelector("#image-comparison-slider .img-wrapper");
+const sliderHandle = document.querySelector("#image-comparison-slider .handle");
+
+function sliderMouseMove(event) {
+  if (!isSliderLocked) return;
+
+  const sliderLeftX = slider.offsetLeft;
+  const sliderWidth = slider.clientWidth;
+  const sliderHandleWidth = sliderHandle.clientWidth;
+
+  let mouseX = (event.clientX || event.touches[0].clientX) - sliderLeftX;
+  if (mouseX < 0) mouseX = 0;
+  else if (mouseX > sliderWidth) mouseX = sliderWidth;
+
+  sliderImgWrapper.style.width = `${((1 - mouseX / sliderWidth) * 100).toFixed(4)}%`;
+  sliderHandle.style.left = `calc(${((mouseX / sliderWidth) * 100).toFixed(4)}% - ${sliderHandleWidth / 2}px)`;
 }
 
-const rangeInput = document.querySelector(
-  '.comparison-slider input[type="range"]'
-);
-rangeInput.addEventListener("input", (event) =>
-  updateSlider(event.target.value)
-);
+let isSliderLocked = false;
 
-const slider = document.querySelector(".comparison-slider .slider");
-let isDragging = false;
-let startX = 0;
-let startLeft = 0;
+sliderHandle.addEventListener("mousedown", sliderMouseDown);
+sliderHandle.addEventListener("touchstart", sliderMouseDown);
+document.addEventListener("mouseup", sliderMouseUp);
+document.addEventListener("touchend", sliderMouseUp);
 
-slider.addEventListener("mousedown", (event) => {
-  if (event.target === slider) {
-    isDragging = true;
-    startX = event.clientX;
-    startLeft = parseInt(getComputedStyle(slider).left, 10);
-  }
-});
+function sliderMouseDown(event) {
+  isSliderLocked = true;
+  document.addEventListener("mousemove", sliderMouseMove);
+  document.addEventListener("touchmove", sliderMouseMove);
+}
 
-document.addEventListener("mousemove", (event) => {
-  if (isDragging) {
-    const offsetX = event.clientX - startX;
-    const newLeft = startLeft + offsetX;
-    const rangeWidth = slider.offsetWidth;
-    const value = (newLeft / rangeWidth) * 100;
-
-    if (value >= 0 && value <= 100) {
-      updateSlider(value);
-      rangeInput.value = value;
-    }
-  }
-});
-
-document.addEventListener("mouseup", () => {
-  isDragging = false;
-});
+function sliderMouseUp() {
+  isSliderLocked = false;
+  document.removeEventListener("mousemove", sliderMouseMove);
+  document.removeEventListener("touchmove", sliderMouseMove);
+}
