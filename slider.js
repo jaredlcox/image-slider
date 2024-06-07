@@ -1,6 +1,6 @@
-const slider = document.querySelector("#image-comparison-slider");
-const sliderImgWrapper = document.querySelector("#image-comparison-slider .img-wrapper");
-const sliderHandle = document.querySelector("#image-comparison-slider .handle");
+const slider = document.querySelector(".image-comparison-slider");
+const sliderImgWrapper = document.querySelector(".image-comparison-slider .img-wrapper");
+const sliderHandle = document.querySelector(".image-comparison-slider .handle");
 
 function sliderMouseMove(event) {
   if (!isSliderLocked) return;
